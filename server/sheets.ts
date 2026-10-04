@@ -56,7 +56,17 @@ export async function initSheets() {
         } else if (title === 'System Logs') {
           headerValues = ['id', 'timestamp', 'level', 'message', 'context'];
         }
-        sheet = await doc.addSheet({ title, headerValues });
+        sheet = await doc.addSheet({ title });
+        if (headerValues.length > 0) {
+  if (sheet.columnCount < headerValues.length) {
+    await sheet.resize({
+      rowCount: sheet.rowCount,
+      columnCount: headerValues.length
+    });
+  }
+  await sheet.setHeaderRow(headerValues);
+}
+
       } else if (title === 'Bookings') {
         // Fix headers for Bookings if they are missing routeGeometry
         try {

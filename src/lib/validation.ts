@@ -1,5 +1,5 @@
 import { logger } from '../lib/logger';
-export const ALLOWED_EMAIL_DOMAINS = ['gmail.com', 'icloud.com', 'outlook.com', 'yahoo.com', 'hotmail.com', 'example.com'];
+export const ALLOWED_EMAIL_DOMAINS = ['gmail.com', 'icloud.com', 'outlook.com', 'yahoo.com', 'hotmail.com', 'example.com', 'vishaltravels.com'];
 
 export const validateEmail = (email: string, restrictDomains: boolean = true): string | null => {
   if (!email) return 'Email is required';
