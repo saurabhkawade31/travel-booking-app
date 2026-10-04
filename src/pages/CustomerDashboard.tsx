@@ -548,11 +548,6 @@ export default function CustomerDashboard() {
         }
 
         let currentCoords = fromLocationData;
-        const fromCity = fromLocationData.city?.toLowerCase() || fromLocationData.name?.toLowerCase() || '';
-
-        if (fromCity !== 'seoni') {
-          totalDistance += calculateLegDistance(seoniCoords.lat, seoniCoords.lng, fromLocationData.lat, fromLocationData.lng);
-        }
 
         let waypoints: LocationData[] = [];
         if (tripType === 'Tour') {
@@ -576,12 +571,12 @@ export default function CustomerDashboard() {
         let oneWayDistance = 0;
         for (const wp of waypoints) {
           const legDist = calculateLegDistance(currentCoords.lat, currentCoords.lng, wp.lat, wp.lng);
-          totalDistance += legDist;
           oneWayDistance += legDist;
           currentCoords = wp;
         }
 
-        totalDistance += calculateLegDistance(currentCoords.lat, currentCoords.lng, seoniCoords.lat, seoniCoords.lng);
+        // Always charge for going and coming back (Pickup to Drop * 2)
+        totalDistance = oneWayDistance * 2;
 
         let perKmRate = 13;
         if (selectedVehicle === 'Swift Dzire') perKmRate = 13;
@@ -1277,7 +1272,7 @@ export default function CustomerDashboard() {
         <div className="absolute -bottom-8 left-1/3 w-[500px] h-[500px] bg-fuchsia-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-4000"></div>
         
         {/* Subtle noise texture */}
-        <div className="absolute inset-0 opacity-[0.015] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none mix-blend-overlay"></div>
+        <div className="absolute inset-0 opacity-[0.015] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
       </div>
 
       {/* Map Component as Background */}

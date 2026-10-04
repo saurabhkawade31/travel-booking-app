@@ -976,20 +976,16 @@ async function startServer() {
 
       // Calculate total distance
       let currentCoords = fromCoords;
-      
-      if (fromCity !== 'seoni') {
-        // Seoni -> pickup
-        totalDistance += calculateLegDistance(seoniCoords.lat, seoniCoords.lon, fromCoords.lat, fromCoords.lon);
-      }
+      let oneWayDistance = 0;
       
       // pickup -> dest1 -> dest2 -> ... -> destN
       for (const wp of waypoints) {
-        totalDistance += calculateLegDistance(currentCoords.lat, currentCoords.lon, wp.lat, wp.lon);
+        oneWayDistance += calculateLegDistance(currentCoords.lat, currentCoords.lon, wp.lat, wp.lon);
         currentCoords = wp;
       }
       
-      // destN -> Seoni
-      totalDistance += calculateLegDistance(currentCoords.lat, currentCoords.lon, seoniCoords.lat, seoniCoords.lon);
+      // Always charge for going and coming back
+      totalDistance = oneWayDistance * 2;
 
       const distanceRounded = totalDistance.toFixed(2);
       const perKmRate = isAC === 'true' ? 14 : 13;
