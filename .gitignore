@@ -8,3 +8,5 @@ coverage/
 !.env.example
 manual-secret.yaml
 *-secrets.yaml
+k8s/secret.yaml
+service-account.json
