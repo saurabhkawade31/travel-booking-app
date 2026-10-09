@@ -98,7 +98,7 @@ export async function initSheets() {
       await usersSheet.addRow({
         id: Date.now().toString() + '-admin',
         name: 'System Admin',
-        email: 'admin@vishaltravels.com',
+        email: 'admin@yuvrajtravels.com',
         password: 'adminpassword123',
         role: 'admin',
         createdAt: new Date().toISOString()
@@ -113,7 +113,7 @@ export async function initSheets() {
       await staffSheet.addRow({
         id: Date.now().toString() + '-staff',
         name: 'Default Driver',
-        email: 'driver@vishaltravels.com',
+        email: 'driver@yuvrajtravels.com',
         password: 'driverpassword123',
         role: 'staff',
         createdAt: new Date().toISOString()

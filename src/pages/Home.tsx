@@ -74,7 +74,7 @@ export default function Home() {
                 <span className="block text-indigo-600 mt-2">Our Priority</span>
               </h1>
               <p className="relative z-10 mt-6 text-base text-gray-600 sm:text-lg md:text-xl drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] leading-relaxed font-light transition-colors duration-500">
-                Experience the best touring and traveling services with Vishal Tour & Travelers. We offer comfortable, safe, and reliable rides for all your needs.
+                Experience the best touring and traveling services with YuvRaj Tour & Travelers. We offer comfortable, safe, and reliable rides for all your needs.
               </p>
               <div className="relative z-10 mt-10 sm:flex sm:justify-center lg:justify-start gap-4">
                 <Link
@@ -346,7 +346,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {/* About */}
               <div>
-                <h3 className="text-2xl font-bold mb-6 font-heading">Vishal Tour & Travelers</h3>
+                <h3 className="text-2xl font-bold mb-6 font-heading">YuvRaj Tour & Travelers</h3>
                 <p className="text-gray-600 text-sm leading-relaxed max-w-sm transition-colors duration-500">
                   Providing reliable, comfortable, and safe travel experiences. Your journey is our priority. Book with us today for a seamless ride.
                 </p>
@@ -375,7 +375,7 @@ export default function Home() {
                     <div className="p-2 bg-gray-50 rounded-lg mr-4 group-hover:bg-indigo-50 transition-colors border border-transparent">
                       <Mail className="h-5 w-5 text-indigo-600" />
                     </div>
-                    <span className="text-gray-600 text-sm transition-colors duration-500">info@vishaltravels.com</span>
+                    <span className="text-gray-600 text-sm transition-colors duration-500">info@yuvrajtravels.com</span>
                   </li>
                 </ul>
               </div>
@@ -400,7 +400,7 @@ export default function Home() {
             
             <div className="border-t border-gray-200 mt-16 pt-8 flex flex-col md:flex-row items-center justify-between transition-colors duration-500">
               <p className="text-gray-500 text-sm transition-colors duration-500">
-                &copy; {new Date().getFullYear()} Vishal Tour & Travelers. All rights reserved.
+                &copy; {new Date().getFullYear()} YuvRaj Tour & Travelers. All rights reserved.
               </p>
               <div className="mt-4 md:mt-0 flex space-x-6">
                 <Link to="/privacy" className="text-gray-500 hover:text-gray-700 text-sm transition-colors">Privacy Policy</Link>

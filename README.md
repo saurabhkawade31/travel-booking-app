@@ -152,7 +152,7 @@ pipeline {
         IMAGE_TAG                      = "${BUILD_NUMBER}"
         
         // Git Configuration
-        GIT_REPO_URL                   = 'https://github.com/vivekbhangre/Vishal-Tours-Travelers.git'
+        GIT_REPO_URL                   = 'https://github.com/vivekbhangre/YuvRaj-Tours-Travelers.git'
         GIT_BRANCH                     = 'main'
         
         // SonarQube Project Details

@@ -17,11 +17,11 @@ export default function TermsOfService() {
         <p className="text-sm text-gray-500 mb-8">Last Updated: April 10, 2026</p>
 
         <div className="prose prose-indigo max-w-none text-gray-700 space-y-6">
-          <p className="font-medium text-gray-900">By using the Vishal Tour & Travelers platform, you agree to these legally binding terms.</p>
+          <p className="font-medium text-gray-900">By using the YuvRaj Tour & Travelers platform, you agree to these legally binding terms.</p>
 
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">I. Nature of Service (Intermediary)</h2>
-            <p>Vishal Tour & Travelers is a Digital Intermediary (Aggregator) that provides an electronic platform to connect passengers with independent drivers. We do not own the vehicles; we facilitate the contract between you and the service provider.</p>
+            <p>YuvRaj Tour & Travelers is a Digital Intermediary (Aggregator) that provides an electronic platform to connect passengers with independent drivers. We do not own the vehicles; we facilitate the contract between you and the service provider.</p>
           </section>
 
           <section>
@@ -54,7 +54,7 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">V. Limitation of Liability</h2>
-            <p>While we perform background checks on drivers, Vishal Tour & Travelers shall not be held liable for indirect, incidental, or consequential damages (including loss of time or missed connections) arising out of the use of the platform, except as required by the Consumer Protection Act, 2019.</p>
+            <p>While we perform background checks on drivers, YuvRaj Tour & Travelers shall not be held liable for indirect, incidental, or consequential damages (including loss of time or missed connections) arising out of the use of the platform, except as required by the Consumer Protection Act, 2019.</p>
           </section>
 
           <section>

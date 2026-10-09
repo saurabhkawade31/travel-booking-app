@@ -58,7 +58,7 @@ export default function PrivacyPolicy() {
             <p className="mb-2">If you have concerns regarding your data privacy, you may contact our Grievance Officer (as mandated by the IT Act):</p>
             <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-4">
               <p><strong>Name:</strong> [Your Name/Designated Officer]</p>
-              <p><strong>Email:</strong> privacy@vishaltravels.com</p>
+              <p><strong>Email:</strong> privacy@yuvrajtravels.com</p>
               <p><strong>Address:</strong> [Your Physical Business Address], India.</p>
             </div>
             <p className="mt-4 text-sm text-gray-500 italic">Note: We will acknowledge your grievance within 24 hours and resolve it within 15 days.</p>

@@ -43,7 +43,7 @@ export default function Navbar() {
           <div className="flex">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <Map className="h-8 w-8 text-indigo-500" />
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-[#ffffff] truncate tracking-tight transition-colors duration-500">Vishal Tour & Travelers</span>
+              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-[#ffffff] truncate tracking-tight transition-colors duration-500">YuvRaj Tour & Travelers</span>
             </Link>
           </div>
           

@@ -102,7 +102,7 @@ async function startServer() {
     const searchPaths = [
       path.join(process.cwd(), 'src', 'assets', 'images', `${name}.png`),
       path.join(process.cwd(), 'public', 'images', `${name}.png`),
-      `/home/ec2-user/Vishal-Tours-Travelers/src/assets/images/${name}.png`,
+      `/home/ec2-user/YuvRaj-Tours-Travelers/src/assets/images/${name}.png`,
       `/var/www/html/images/${name}.png` // We check the exact folder we copied it to
     ];
 
@@ -878,7 +878,7 @@ async function startServer() {
       
       pdfDoc.pipe(res);
       
-      pdfDoc.fontSize(25).text('Vishal Tour & Travelers', { align: 'center' });
+      pdfDoc.fontSize(25).text('YuvRaj Tour & Travelers', { align: 'center' });
       pdfDoc.moveDown();
       pdfDoc.fontSize(18).text('Monthly Revenue Report', { align: 'center' });
       pdfDoc.moveDown();
