@@ -9,7 +9,7 @@ interface MovingCarMarkerProps {
 export default function MovingCarMarker({ routePath }: MovingCarMarkerProps) {
   const [position, setPosition] = useState<L.LatLngExpression | null>(null);
   const [rotation, setRotation] = useState(0);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!routePath || routePath.length < 2) {

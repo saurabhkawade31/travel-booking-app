@@ -32,7 +32,7 @@ const variants = {
 };
 
 const transitionConfig = {
-  type: 'spring',
+  type: 'spring' as const,
   stiffness: 260,
   damping: 20,
   mass: 1,

@@ -13,6 +13,8 @@ import InteractiveMap from '../components/InteractiveMap';
 import SlideToBookButton from '../components/SlideToBookButton';
 import { toast } from 'sonner';
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 interface LocationData {
@@ -609,10 +611,11 @@ export default function CustomerDashboard() {
 
   useEffect(() => {
     let recommended = '';
-    if (numberOfPeople >= 1 && numberOfPeople <= 4) recommended = 'Swift Dzire';
-    else if (numberOfPeople >= 5 && numberOfPeople <= 7) recommended = 'Ertiga';
-    else if (numberOfPeople >= 8 && numberOfPeople <= 18) recommended = 'Force Traveller (18 Seater)';
-    else if (numberOfPeople >= 19 && numberOfPeople <= 22) recommended = 'Force Traveller (22 Seater)';
+    const peopleCount = Number(numberOfPeople) || 0;
+    if (peopleCount >= 1 && peopleCount <= 4) recommended = 'Swift Dzire';
+    else if (peopleCount >= 5 && peopleCount <= 7) recommended = 'Ertiga';
+    else if (peopleCount >= 8 && peopleCount <= 18) recommended = 'Force Traveller (18 Seater)';
+    else if (peopleCount >= 19 && peopleCount <= 22) recommended = 'Force Traveller (22 Seater)';
     
     if (recommended) {
       setSelectedVehicle(recommended);
@@ -841,7 +844,8 @@ export default function CustomerDashboard() {
       }
     }
 
-    if (numberOfPeople < 1) {
+    const peopleCount = Number(numberOfPeople) || 0;
+    if (peopleCount < 1) {
       setBookingError('Number of people must be at least 1.');
       setBookingLoading(false);
       return;
@@ -850,7 +854,7 @@ export default function CustomerDashboard() {
     try {
       if (!user) return;
       
-      if (numberOfPeople > 22) {
+      if (peopleCount > 22) {
         setBookingError('Please contact admin for custom arrangement.');
         setBookingLoading(false);
         return;
@@ -872,7 +876,7 @@ export default function CustomerDashboard() {
         }
       }
       
-      if (vehicleObj && vehicleObj.capacity < numberOfPeople && !confirmCapacity && tripType !== 'Car Renting') {
+      if (vehicleObj && vehicleObj.capacity < peopleCount && !confirmCapacity && tripType !== 'Car Renting') {
         setBookingError('Please confirm that you want to proceed with a vehicle that may not accommodate all passengers.');
         setBookingLoading(false);
         return;
@@ -1820,15 +1824,17 @@ export default function CustomerDashboard() {
                       {tripType === 'Car Renting' ? 'When do you want the vehicle? (Date & Time)' : tripType === 'Round-trip' ? 'Departure Date & Time' : 'Date & Time'}
                     </label>
                     <div className="mt-1 flex flex-wrap gap-3">
-                      <input
-                        type="date"
+                      <DatePicker
                         id="rideDate"
                         required
-                        min={new Date().toISOString().split('T')[0]}
-                        value={rideDate}
-                        onChange={(e) => setRideDate(e.target.value)}
-                        onFocus={handleInputFocus}
+                        selected={rideDate ? new Date(rideDate) : null}
+                        onChange={(date: Date | null) => setRideDate(date ? date.toLocaleDateString('en-CA') : '')}
+                        minDate={new Date()}
+                        onFocus={handleInputFocus as any}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select Date"
                         className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
+                        wrapperClassName="w-full sm:flex-1"
                       />
                       <div className="flex gap-2 items-center flex-1 min-w-[240px]">
                         <select
@@ -1874,15 +1880,17 @@ export default function CustomerDashboard() {
                       >
                         <label htmlFor="returnDate" className="block text-xs font-semibold mt-4 mb-2 text-gray-900/50 tracking-wider uppercase">Return Date & Time</label>
                         <div className="mt-1 flex flex-wrap gap-3">
-                          <input
-                            type="date"
+                          <DatePicker
                             id="returnDate"
                             required={tripType === 'Round-trip'}
-                            min={rideDate || new Date().toISOString().split('T')[0]}
-                            value={returnDate}
-                            onChange={(e) => setReturnDate(e.target.value)}
-                            onFocus={handleInputFocus}
+                            selected={returnDate ? new Date(returnDate) : null}
+                            onChange={(date: Date | null) => setReturnDate(date ? date.toLocaleDateString('en-CA') : '')}
+                            minDate={rideDate ? new Date(rideDate) : new Date()}
+                            onFocus={handleInputFocus as any}
+                            dateFormat="yyyy-MM-dd"
+                            placeholderText="Select Return Date"
                             className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
+                            wrapperClassName="w-full sm:flex-1"
                           />
                           <div className="flex gap-2 items-center flex-1 min-w-[240px]">
                             <select
@@ -1972,15 +1980,17 @@ export default function CustomerDashboard() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <label htmlFor="weddingDate" className="block text-xs font-semibold mb-2 text-gray-900/50 tracking-wider uppercase">Wedding Date</label>
-                            <input
-                              type="date"
+                            <DatePicker
                               id="weddingDate"
                               required={tripType === 'Wedding'}
-                              min={new Date().toISOString().split('T')[0]}
-                              value={weddingDate}
-                              onChange={(e) => setWeddingDate(e.target.value)}
-                              onFocus={handleInputFocus}
+                              selected={weddingDate ? new Date(weddingDate) : null}
+                              onChange={(date: Date | null) => setWeddingDate(date ? date.toLocaleDateString('en-CA') : '')}
+                              minDate={new Date()}
+                              onFocus={handleInputFocus as any}
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="Select Wedding Date"
                               className="mt-1 block w-full bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
+                              wrapperClassName="w-full"
                             />
                           </div>
                           <div>
@@ -2100,7 +2110,7 @@ export default function CustomerDashboard() {
                               })}
                             </div>
                             
-                            {AVAILABLE_VEHICLES.find(v => v.name === selectedVehicle)?.capacity! < numberOfPeople && (
+                            {AVAILABLE_VEHICLES.find(v => v.name === selectedVehicle)?.capacity! < Number(numberOfPeople) && (
                               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 mt-4 mx-2">
                                 <p className="text-sm font-medium text-yellow-400 mb-2">
                                   ⚠️ Exceeds vehicle capacity (Max: {AVAILABLE_VEHICLES.find(v => v.name === selectedVehicle)?.capacity}).
@@ -2265,7 +2275,7 @@ export default function CustomerDashboard() {
                                       }
                                     }}
                                     isLoading={bookingLoading}
-                                    disabled={bookingLoading || (numberOfPeople > 22 && !confirmCapacity)}
+                                    disabled={bookingLoading || (Number(numberOfPeople) > 22 && !confirmCapacity)}
                                   />
                                   <button
                                     id="hidden-submit-btn"
@@ -2760,14 +2770,17 @@ export default function CustomerDashboard() {
                   
                   <div>
                     <label className={`block text-[10px] font-bold mb-1.5 text-gray-500 dark:text-gray-400 tracking-wider uppercase`}>Select New Date</label>
-                    <input
-                      type="date"
+                    <DatePicker
+                      id="rebookDate"
                       required
-                      min={new Date().toISOString().split('T')[0]}
-                      value={rebookDate}
-                      onChange={(e) => setRebookDate(e.target.value)}
-                      onFocus={handleInputFocus}
+                      selected={rebookDate ? new Date(rebookDate) : null}
+                      onChange={(date: Date | null) => setRebookDate(date ? date.toLocaleDateString('en-CA') : '')}
+                      minDate={new Date()}
+                      onFocus={handleInputFocus as any}
+                      dateFormat="yyyy-MM-dd"
+                      placeholderText="Select New Date"
                       className={`block w-full border border-gray-200 dark:border-[#ffffff]/20 bg-white dark:bg-[#ffffff]/5 text-gray-900 dark:text-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 sm:text-sm transition-all dark:[color-scheme:dark]`}
+                      wrapperClassName="w-full"
                     />
                   </div>
                   
