@@ -12,9 +12,6 @@ import debounce from 'lodash.debounce';
 import InteractiveMap from '../components/InteractiveMap';
 import SlideToBookButton from '../components/SlideToBookButton';
 import { toast } from 'sonner';
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 interface LocationData {
@@ -1824,17 +1821,15 @@ export default function CustomerDashboard() {
                       {tripType === 'Car Renting' ? 'When do you want the vehicle? (Date & Time)' : tripType === 'Round-trip' ? 'Departure Date & Time' : 'Date & Time'}
                     </label>
                     <div className="mt-1 flex flex-wrap gap-3">
-                      <DatePicker
+                      <input
+                        type="date"
                         id="rideDate"
                         required
-                        selected={rideDate ? new Date(rideDate) : null}
-                        onChange={(date: Date | null) => setRideDate(date ? date.toLocaleDateString('en-CA') : '')}
-                        minDate={new Date()}
+                        value={rideDate}
+                        onChange={(e) => setRideDate(e.target.value)}
+                        min={new Date().toISOString().split('T')[0]}
                         onFocus={handleInputFocus as any}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Select Date"
                         className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
-                        wrapperClassName="w-full sm:flex-1"
                       />
                       <div className="flex gap-2 items-center flex-1 min-w-[240px]">
                         <select
@@ -1880,17 +1875,15 @@ export default function CustomerDashboard() {
                       >
                         <label htmlFor="returnDate" className="block text-xs font-semibold mt-4 mb-2 text-gray-900/50 tracking-wider uppercase">Return Date & Time</label>
                         <div className="mt-1 flex flex-wrap gap-3">
-                          <DatePicker
+                          <input
+                            type="date"
                             id="returnDate"
                             required={tripType === 'Round-trip'}
-                            selected={returnDate ? new Date(returnDate) : null}
-                            onChange={(date: Date | null) => setReturnDate(date ? date.toLocaleDateString('en-CA') : '')}
-                            minDate={rideDate ? new Date(rideDate) : new Date()}
+                            value={returnDate}
+                            onChange={(e) => setReturnDate(e.target.value)}
+                            min={rideDate || new Date().toISOString().split('T')[0]}
                             onFocus={handleInputFocus as any}
-                            dateFormat="yyyy-MM-dd"
-                            placeholderText="Select Return Date"
                             className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
-                            wrapperClassName="w-full sm:flex-1"
                           />
                           <div className="flex gap-2 items-center flex-1 min-w-[240px]">
                             <select
@@ -1980,17 +1973,15 @@ export default function CustomerDashboard() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <label htmlFor="weddingDate" className="block text-xs font-semibold mb-2 text-gray-900/50 tracking-wider uppercase">Wedding Date</label>
-                            <DatePicker
+                            <input
+                              type="date"
                               id="weddingDate"
                               required={tripType === 'Wedding'}
-                              selected={weddingDate ? new Date(weddingDate) : null}
-                              onChange={(date: Date | null) => setWeddingDate(date ? date.toLocaleDateString('en-CA') : '')}
-                              minDate={new Date()}
+                              value={weddingDate}
+                              onChange={(e) => setWeddingDate(e.target.value)}
+                              min={new Date().toISOString().split('T')[0]}
                               onFocus={handleInputFocus as any}
-                              dateFormat="yyyy-MM-dd"
-                              placeholderText="Select Wedding Date"
                               className="mt-1 block w-full bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
-                              wrapperClassName="w-full"
                             />
                           </div>
                           <div>
@@ -2770,17 +2761,15 @@ export default function CustomerDashboard() {
                   
                   <div>
                     <label className={`block text-[10px] font-bold mb-1.5 text-gray-500 dark:text-gray-400 tracking-wider uppercase`}>Select New Date</label>
-                    <DatePicker
+                    <input
+                      type="date"
                       id="rebookDate"
                       required
-                      selected={rebookDate ? new Date(rebookDate) : null}
-                      onChange={(date: Date | null) => setRebookDate(date ? date.toLocaleDateString('en-CA') : '')}
-                      minDate={new Date()}
+                      value={rebookDate}
+                      onChange={(e) => setRebookDate(e.target.value)}
+                      min={new Date().toISOString().split('T')[0]}
                       onFocus={handleInputFocus as any}
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Select New Date"
                       className={`block w-full border border-gray-200 dark:border-[#ffffff]/20 bg-white dark:bg-[#ffffff]/5 text-gray-900 dark:text-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 sm:text-sm transition-all dark:[color-scheme:dark]`}
-                      wrapperClassName="w-full"
                     />
                   </div>
                   
