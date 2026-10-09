@@ -39,3 +39,20 @@ spec:
       port: 80
       targetPort: 3000
       nodePort: 30080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: travel-booking-ingress
+spec:
+  rules:
+  - host: yuvrajtravels.duckdns.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: travel-booking-service
+            port:
+              number: 80
