@@ -59,11 +59,27 @@ pipeline {
 
         stage('CD Deploy to Kubernetes') {
             steps {
-                sh """
-                # Update image tag in deployment
-                sed -i "s|image: .*|image: \${DOCKER_IMAGE}:\${DOCKER_TAG}|g" k8s/deployment.yaml
-                kubectl apply -f k8s/
-                """
+                withCredentials([
+                    string(credentialsId: 'GEMINI_API_KEY', variable: 'GEMINI_KEY'),
+                    string(credentialsId: 'GOOGLE_PRIVATE_KEY', variable: 'GOOGLE_KEY'),
+                    string(credentialsId: 'GOOGLE_SERVICE_ACCOUNT_EMAIL', variable: 'GOOGLE_EMAIL'),
+                    string(credentialsId: 'GOOGLE_SHEET_ID', variable: 'GOOGLE_SHEET')
+                ]) {
+                    sh """
+                    # 1. Create the secret in Kubernetes from Jenkins credentials
+                    kubectl create secret generic travel-app-secret \\
+                      --from-literal=GEMINI_API_KEY="\$GEMINI_KEY" \\
+                      --from-literal=GOOGLE_PRIVATE_KEY="\$GOOGLE_KEY" \\
+                      --from-literal=GOOGLE_SERVICE_ACCOUNT_EMAIL="\$GOOGLE_EMAIL" \\
+                      --from-literal=GOOGLE_SHEET_ID="\$GOOGLE_SHEET" \\
+                      --dry-run=client -o yaml | kubectl apply -f -
+                    
+                    # 2. Update image tag in deployment and apply manifests
+                    sed -i "s|image: .*|image: \${DOCKER_IMAGE}:\${DOCKER_TAG}|g" k8s/deployment.yaml
+                    kubectl apply -f k8s/configmap.yaml
+                    kubectl apply -f k8s/deployment.yaml
+                    """
+                }
             }
         }
     }
