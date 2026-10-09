@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: travel-booking-app
-        image: vivekbhangre/travel-booking-app:latest
+        image: saurabjkawde31/travel:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         envFrom:
