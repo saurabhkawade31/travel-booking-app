@@ -1088,33 +1088,7 @@ export default function CustomerDashboard() {
     }));
 
     try {
-      const response = await fetch(`/api/bookings/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await response.json();
-        if (!response.ok) {
-          // Revert Optimistic Update
-          setBookings(previousBookings);
-          setCancelMessage({ id, text: data.message || data.error || "Failed to cancel ride", type: 'error' });
-          return;
-        }
-      } else {
-        const text = await response.text();
-        if (!response.ok) {
-          logger.error("Non-JSON error response:", text);
-          // Revert Optimistic Update
-          setBookings(previousBookings);
-          setCancelMessage({ id, text: "Failed to cancel ride. Server returned an invalid response.", type: 'error' });
-          return;
-        }
-      }
+      await api.updateBooking(id, payload);
 
       setCancelMessage({ id, text: "Ride cancelled successfully", type: 'success' });
       
@@ -1130,11 +1104,7 @@ export default function CustomerDashboard() {
           }));
           
           try {
-            await fetch(`/api/bookings/${id}`, {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ refundStatus: "Pending" })
-            });
+            await api.updateBooking(id, { refundStatus: "Pending" });
           } catch (err) {
             logger.error("Failed to automatically update refund status to Pending:", err);
             // We could revert here, but it's a background task, so we'll just fetch fresh data later
@@ -1145,11 +1115,21 @@ export default function CustomerDashboard() {
       setTimeout(() => {
         setCancelMessage(null);
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error cancelling ride:", error);
       // Revert Optimistic Update
       setBookings(previousBookings);
-      setCancelMessage({ id, text: "An error occurred while cancelling the ride. Please try again.", type: 'error' });
+      
+      let errorMsg = "An error occurred while cancelling the ride. Please try again.";
+      try {
+        const parsed = JSON.parse(error.message);
+        if (parsed.message) errorMsg = parsed.message;
+        else if (parsed.error) errorMsg = parsed.error;
+      } catch (e) {
+        // Use generic error if not JSON
+      }
+      
+      setCancelMessage({ id, text: errorMsg, type: 'error' });
     }
   };
 
@@ -1848,7 +1828,7 @@ export default function CustomerDashboard() {
                         value={rideDate}
                         onChange={(e) => setRideDate(e.target.value)}
                         onFocus={handleInputFocus}
-                        className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm [color-scheme:dark]"
+                        className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
                       />
                       <div className="flex gap-2 items-center flex-1 min-w-[240px]">
                         <select
@@ -1902,7 +1882,7 @@ export default function CustomerDashboard() {
                             value={returnDate}
                             onChange={(e) => setReturnDate(e.target.value)}
                             onFocus={handleInputFocus}
-                            className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm [color-scheme:dark]"
+                            className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
                           />
                           <div className="flex gap-2 items-center flex-1 min-w-[240px]">
                             <select
@@ -2000,7 +1980,7 @@ export default function CustomerDashboard() {
                               value={weddingDate}
                               onChange={(e) => setWeddingDate(e.target.value)}
                               onFocus={handleInputFocus}
-                              className="mt-1 block w-full bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm [color-scheme:dark]"
+                              className="mt-1 block w-full bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
                             />
                           </div>
                           <div>
@@ -2787,7 +2767,7 @@ export default function CustomerDashboard() {
                       value={rebookDate}
                       onChange={(e) => setRebookDate(e.target.value)}
                       onFocus={handleInputFocus}
-                      className={`block w-full border border-gray-200 dark:border-[#ffffff]/20 bg-white dark:bg-[#ffffff]/5 text-gray-900 dark:text-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 sm:text-sm transition-all`}
+                      className={`block w-full border border-gray-200 dark:border-[#ffffff]/20 bg-white dark:bg-[#ffffff]/5 text-gray-900 dark:text-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 sm:text-sm transition-all dark:[color-scheme:dark]`}
                     />
                   </div>
                   

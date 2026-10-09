@@ -18,51 +18,33 @@ router.get('/location', async (req, res) => {
       return res.json(cache.get(cacheKey));
     }
 
-    // Using Nominatim for better hierarchy and India-only restrictions
-    let data: any[] = [];
-    let searchWords = query.split(' ').filter(Boolean);
-    let usedFallback = false;
-
-    while (searchWords.length > 0) {
-      const searchStr = searchWords.join(' ');
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchStr)}&countrycodes=in&format=json&addressdetails=1&limit=15`,
-        {
-          headers: {
-            'User-Agent': 'RideBookingApp/1.0'
-          }
-        }
-      );
-
-      if (response.ok) {
-        data = await response.json();
-        
-        if (data.length > 0) {
-          if (searchStr.toLowerCase() !== query.toLowerCase()) {
-            usedFallback = true;
-          }
-          break;
+    // Using Photon (Komoot) for much faster autocomplete than Nominatim
+    const response = await fetch(
+      `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=20.5937&lon=78.9629&limit=20`,
+      {
+        headers: {
+          'User-Agent': 'RideBookingApp/1.0'
         }
       }
-      
-      searchWords.pop();
-      
-      // Add a small delay to respect Nominatim's rate limits (1 request/sec recommended)
-      if (searchWords.length > 0) {
-        await new Promise(resolve => setTimeout(resolve, 300));
-      }
+    );
+
+    let data = { features: [] };
+    if (response.ok) {
+      data = await response.json();
     }
 
-    const results = data
+    const results = data.features
       .filter((item: any) => {
-        const type = item.type;
-        const class_ = item.class;
-        const addresstype = item.addresstype;
-        const name = item.name?.toLowerCase() || '';
+        const props = item.properties;
         
-        // Filter out fake/small airports like "Seoni Airport" if they are not real commercial airports,
-        // but since we can't easily know, we'll just allow aeroway:aerodrome.
-        // However, the user specifically complained about "Seoni Airport".
+        // Filter out non-India results if any slipped through
+        if (props.countrycode && props.countrycode.toUpperCase() !== 'IN') return false;
+
+        const type = props.type;
+        const osm_value = props.osm_value;
+        const name = props.name?.toLowerCase() || '';
+        
+        // Filter out fake/small airports like "Seoni Airport"
         if (name.includes('seoni airport')) return false;
 
         const allowedAddressTypes = [
@@ -73,10 +55,7 @@ router.get('/location', async (req, res) => {
           'amenity', 'building', 'highway', 'tourism', 'historic', 'leisure'
         ];
 
-        // If we used a fallback, we should be more lenient with the types of the fallback result
-        if (usedFallback) return true;
-
-        if (allowedAddressTypes.includes(addresstype) || allowedAddressTypes.includes(type)) return true;
+        if (allowedAddressTypes.includes(osm_value) || allowedAddressTypes.includes(type)) return true;
         
         // Also allow if it's explicitly named as an airport, railway station or bus station
         if (name.includes('airport') || name.includes('railway station') || name.includes('bus station') || name.includes('bus stand')) {
@@ -87,21 +66,14 @@ router.get('/location', async (req, res) => {
       })
       .slice(0, 10)
       .map((item: any) => {
-        const address = item.address || {};
+        const props = item.properties;
         
-        // Capitalize words if using fallback query
-        let formattedName = item.name || "";
-        if (usedFallback) {
-          formattedName = query.split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-            .join(' ');
-        }
-        
-        const name = formattedName;
-        const city = address.city || address.town || address.village || address.municipality || "";
-        const district = address.state_district || address.county || "";
-        const state = address.state || "";
-        const country = address.country || "India";
+        // Format the name appropriately
+        const name = props.name || "";
+        const city = props.city || props.town || props.village || props.municipality || "";
+        const district = props.district || props.county || props.state_district || "";
+        const state = props.state || "";
+        const country = props.country || "India";
 
         // Build hierarchy: City -> District -> State -> India
         const hierarchyParts = [...new Set([district, state, country].filter(Boolean))];
@@ -115,12 +87,12 @@ router.get('/location', async (req, res) => {
           district: district,
           state: state,
           country: country,
-          lat: parseFloat(item.lat),
-          lng: parseFloat(item.lon),
+          lat: parseFloat(item.geometry.coordinates[1]),
+          lng: parseFloat(item.geometry.coordinates[0]),
           displayName: displayNameParts.join(', '),
           primaryText: name || city || state,
           secondaryText: secondaryText,
-          addresstype: item.addresstype || item.type
+          addresstype: props.osm_value || props.type
         };
       });
 
