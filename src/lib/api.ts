@@ -116,7 +116,8 @@ export const api = {
   },
 
   async downloadMonthlyReport() {
-    window.open(`${API_URL}/reports/monthly`, '_blank');
+    const token = localStorage.getItem('token');
+    window.open(`${API_URL}/reports/monthly?token=${token}`, '_blank');
   },
 
   async getRevenueLogs(forceRefresh?: boolean, page: number = 1, limit: number = 50) {

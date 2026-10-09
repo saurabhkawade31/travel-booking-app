@@ -5,7 +5,11 @@ export const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-123!!!';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  let token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token && req.query.token) {
+    token = req.query.token as string;
+  }
   
   if (token == null) return res.sendStatus(401);
   
