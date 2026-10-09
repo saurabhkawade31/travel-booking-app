@@ -360,22 +360,22 @@ export default function Home() {
                     <div className="p-2 bg-gray-50 rounded-lg mr-4 group-hover:bg-indigo-50 transition-colors border border-transparent">
                       <MapPin className="h-5 w-5 text-indigo-600" />
                     </div>
-                    <span className="text-gray-600 text-sm mt-1 transition-colors duration-500">123 Main Street, City Center<br />State, Country 12345</span>
+                    <span className="text-gray-600 text-sm mt-1 transition-colors duration-500">Khamgaon, Kannad, Kannad–Vaijapur Road,<br />Dist. Chhatrapati Sambhajinagar, Maharashtra, India.</span>
                   </li>
                   <li className="flex items-start group">
                     <div className="p-2 bg-gray-50 rounded-lg mr-4 group-hover:bg-indigo-50 transition-colors border border-transparent">
                       <Phone className="h-5 w-5 text-indigo-600" />
                     </div>
                     <span className="text-gray-600 text-sm mt-1 transition-colors duration-500">
-                      +91 6266440222<br />
-                      +91 9589681877
+                      +91 8177882036<br />
+                      +91 9325197126
                     </span>
                   </li>
                   <li className="flex items-center group">
                     <div className="p-2 bg-gray-50 rounded-lg mr-4 group-hover:bg-indigo-50 transition-colors border border-transparent">
                       <Mail className="h-5 w-5 text-indigo-600" />
                     </div>
-                    <span className="text-gray-600 text-sm transition-colors duration-500">info@yuvrajtravels.com</span>
+                    <span className="text-gray-600 text-sm transition-colors duration-500">yuvrajkawde2004@gmail.com</span>
                   </li>
                 </ul>
               </div>
@@ -384,16 +384,16 @@ export default function Home() {
               <div>
                 <h3 className="text-lg font-semibold mb-6 text-gray-800 transition-colors duration-500">Follow Us</h3>
                 <p className="text-gray-600 text-sm mb-6 transition-colors duration-500">
-                  Stay updated with our latest offers and travel stories.
+                  Stay connected with YuvRaj Tour & Travelers for reliable travel services, comfortable journeys, and the latest travel updates.
                 </p>
                 <a 
-                  href="https://www.instagram.com/ertiga__love__8952_seoni?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
+                  href="https://www.instagram.com/saurabh_kawade_sk" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-xl text-gray-700 hover:text-pink-600 transition-all duration-300 border border-gray-200 hover:border-pink-500/30 backdrop-blur-sm"
                 >
                   <Instagram className="h-5 w-5 mr-3" />
-                  <span className="text-sm font-medium">@ertiga__love__8952_seoni</span>
+                  <span className="text-sm font-medium">@saurabh_kawade_sk</span>
                 </a>
               </div>
             </div>

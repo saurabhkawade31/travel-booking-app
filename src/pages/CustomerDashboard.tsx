@@ -1828,7 +1828,13 @@ export default function CustomerDashboard() {
                         value={rideDate}
                         onChange={(e) => setRideDate(e.target.value)}
                         min={new Date().toISOString().split('T')[0]}
-                        onFocus={handleInputFocus as any}
+                        onFocus={(e) => {
+                          handleInputFocus(e as any);
+                          if ('showPicker' in e.target) (e.target as any).showPicker();
+                        }}
+                        onClick={(e) => {
+                          if ('showPicker' in e.target) (e.target as any).showPicker();
+                        }}
                         className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
                       />
                       <div className="flex gap-2 items-center flex-1 min-w-[240px]">
@@ -1882,7 +1888,13 @@ export default function CustomerDashboard() {
                             value={returnDate}
                             onChange={(e) => setReturnDate(e.target.value)}
                             min={rideDate || new Date().toISOString().split('T')[0]}
-                            onFocus={handleInputFocus as any}
+                            onFocus={(e) => {
+                              handleInputFocus(e as any);
+                              if ('showPicker' in e.target) (e.target as any).showPicker();
+                            }}
+                            onClick={(e) => {
+                              if ('showPicker' in e.target) (e.target as any).showPicker();
+                            }}
                             className="block w-full sm:flex-1 min-w-[150px] bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
                           />
                           <div className="flex gap-2 items-center flex-1 min-w-[240px]">
@@ -1980,7 +1992,13 @@ export default function CustomerDashboard() {
                               value={weddingDate}
                               onChange={(e) => setWeddingDate(e.target.value)}
                               min={new Date().toISOString().split('T')[0]}
-                              onFocus={handleInputFocus as any}
+                              onFocus={(e) => {
+                                handleInputFocus(e as any);
+                                if ('showPicker' in e.target) (e.target as any).showPicker();
+                              }}
+                              onClick={(e) => {
+                                if ('showPicker' in e.target) (e.target as any).showPicker();
+                              }}
                               className="mt-1 block w-full bg-white dark:bg-[#ffffff]/5 border border-gray-200 border-opacity-50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] rounded-xl py-3 px-4 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm dark:[color-scheme:dark]"
                             />
                           </div>
@@ -2768,7 +2786,13 @@ export default function CustomerDashboard() {
                       value={rebookDate}
                       onChange={(e) => setRebookDate(e.target.value)}
                       min={new Date().toISOString().split('T')[0]}
-                      onFocus={handleInputFocus as any}
+                      onFocus={(e) => {
+                        handleInputFocus(e as any);
+                        if ('showPicker' in e.target) (e.target as any).showPicker();
+                      }}
+                      onClick={(e) => {
+                        if ('showPicker' in e.target) (e.target as any).showPicker();
+                      }}
                       className={`block w-full border border-gray-200 dark:border-[#ffffff]/20 bg-white dark:bg-[#ffffff]/5 text-gray-900 dark:text-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 sm:text-sm transition-all dark:[color-scheme:dark]`}
                     />
                   </div>

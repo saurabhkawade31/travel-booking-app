@@ -661,20 +661,25 @@ async function startServer() {
       }
 
       if (rideStatus === 'Cancelled' && !isUserAdmin) {
-        const rideDateStr = row.get('rideDate');
-        if (rideDateStr) {
-          const rideTime = new Date(rideDateStr);
-          const nowIST = new Date(
-            new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-          );
+        const currentStatus = row.get('rideStatus');
+        
+        // If the booking is still pending (admin hasn't confirmed), allow cancellation anytime
+        if (currentStatus !== 'Pending') {
+          const rideDateStr = row.get('rideDate');
+          if (rideDateStr) {
+            const rideTime = new Date(rideDateStr);
+            const nowIST = new Date(
+              new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+            );
 
-          const diffInHours = (rideTime.getTime() - nowIST.getTime()) / (1000 * 60 * 60);
+            const diffInHours = (rideTime.getTime() - nowIST.getTime()) / (1000 * 60 * 60);
 
-          if (diffInHours < 2) {
-            return res.status(400).json({
-              error: "Cancellation not allowed",
-              message: "You can cancel the ride only up to 2 hours before departure."
-            });
+            if (diffInHours < 2) {
+              return res.status(400).json({
+                error: "Cancellation not allowed",
+                message: "You can cancel the ride only up to 2 hours before departure."
+              });
+            }
           }
         }
       }
